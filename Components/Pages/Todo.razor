@@ -1,0 +1,105 @@
+﻿@page "/todo"
+@using A2EventDrivenAppAndExceptions.Data
+@inject IJSRuntime JSRuntime
+
+<h2>Todo List</h2>
+<br />
+
+<!--The @onsubmit attribute calls the AddItem method when the form is submitted-->
+<form @onsubmit= "AddItem">
+    <div class="input-group mb-3">
+        <!--Add an input field and a button to submit the todo item, adding the new todo to the list-->
+        <input class="border-1 rounded-1 w-25 " placeholder="Enter a new Todo to your list" @bind="newTodo" />
+        <button class="btn btn-primary">Add</button>
+    </div>
+
+
+    <h3>Todo</h3>
+
+    <ul class="list-group list-group-flush">
+        @foreach (var todo in todos)
+        {
+            if (!todo.IsDone)
+            {
+
+                <li class="list-group-item ">
+                    <div>
+                        <!--Adding a checkbox binded to the boolean from the TodoItem class-->
+                        <input type="checkbox" @bind="todo.IsDone" />
+                        <!--List of todos-->
+                        @todo.Title
+                        <button class="btn btn-danger" @onclick="() => RemoveItem(todo)">Delete</button>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+
+    <h3>Done</h3>
+
+    <ul class="list-group list-group-flush">
+        @foreach (var todo in todos.Where(t => t.IsDone))
+        {
+            @if (todo.IsDone)
+            {
+                <li class="list-group-item">
+                    <div class=" form-check">                  
+                        @todo.Title
+                        <button class="btn btn-danger" @onclick="() => RemoveItem(todo)">Delete</button>
+                    </div>
+                </li>         
+
+            }
+        }
+    </ul>
+</form>
+
+
+@code {
+
+    //List to store the all todos
+    List<TodoItem> todos = new();
+    //Variable to store the new todo
+    private string? newTodo;
+
+    //Event handler to add a new todo
+    private async void AddItem()
+    {
+        try
+        {
+            //if the new todo is not empty
+            if (!string.IsNullOrWhiteSpace(newTodo))
+            {
+               
+                string[] invalidSymbols = { "@", "#", "$", "%" };
+
+                foreach (string symbol in invalidSymbols)
+				{
+					if (newTodo.Contains(symbol))
+					{
+                        throw new SpecialCharactersException();
+					}
+				}
+
+                //then add a new todo to the list
+                todos.Add(new TodoItem { Title = newTodo });
+                //and set the new todo to empty
+                newTodo = string.Empty;
+                
+            }
+		}
+
+		catch (SpecialCharactersException)
+		{
+            await JSRuntime.InvokeVoidAsync("showAlert", "Todo item contains invalid characters. These are not allowed: @ # $ %", "");
+		}
+    }
+
+    //Remove speciific todo passing the object
+    private void RemoveItem(TodoItem todo)
+    {
+        todos.Remove(todo);
+        Console.Beep();
+    }
+
+}

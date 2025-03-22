@@ -1,0 +1,141 @@
+﻿@page "/calculator"
+@inject IJSRuntime JSRuntime
+
+
+<div>
+	<h1 class="text-success fw-bold ">Blazor Calculator</h1>
+	<hr>
+</div>
+
+<div class="input-group mb-3">
+	<label class="col-sm-2 col-form-label fw-bold">Enter First Number</label>
+	<input class="rounded-2 border-1 w-25" placeholder="Enter First Number" @bind="@num1"  />
+
+</div>
+<br />
+<div class="input-group mb-3">
+	<label class="col-sm-2 col-form-label fw-bold">Enter Second Number</label>
+	<input class="rounded-2 border-1 w-25" placeholder="Enter Second Number" @bind="@num2"  />
+</div>
+<br />
+<div class="input-group mb-3">
+
+	<label class="fw-bold col-sm-2 col-form-label">Result: </label>
+	<label class="bg-secondary bg-opacity-25 rounded-2 border-1 w-25 text-sm-center">@result</label>
+</div>
+<br />
+<div>
+	<button class="btn btn-outline-success me-5" @onclick="Addition">		Add (+)</button>
+	<button class="btn btn-outline-primary me-5" @onclick="Subtraction">		Subtract (-)</button>
+	<button class="btn btn-outline-info me-5" @onclick="Multiplication">	Multiply (X)</button>
+	<button class="btn btn-outline-danger me-5" @onclick="Division">		Divide (/)</button>
+	<button class="btn btn-outline-secondary me-5" @onclick="ClearAll">			Clear All</button>
+</div>
+
+@code {
+
+	private string num1, num2, result = "";
+
+
+	private async void Addition()
+	{
+		try
+		{
+			result = (double.Parse(num1) + double.Parse(num2)).ToString();
+		}
+
+		catch (FormatException)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+			
+
+		}
+		catch (Exception ex)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", $"Error: {ex.Message}", "");
+		}
+
+		Clear();
+	}
+
+	private async void Subtraction()
+	{
+		try
+		{
+			result = (double.Parse(num1) - double.Parse(num2)).ToString();
+		}
+
+		catch (FormatException)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+		}
+		catch (Exception ex)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", $"Error: {ex.Message}", "");
+		}
+		Clear();
+	}
+
+	private async void Multiplication()
+	{
+		try
+		{
+			result = (double.Parse(num1) * double.Parse(num2)).ToString();
+		}
+
+		catch (FormatException)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+		}
+		catch (Exception ex)
+		{
+			await JSRuntime.InvokeVoidAsync($"Error: {ex.Message}", "");
+		}
+		Clear();
+	}
+
+	private async void Division()
+	{
+		try
+		{
+			double divisor = double.Parse(num2);
+			if (divisor == 0)
+			{
+				throw new DivideByZeroException();
+			}
+
+			result = (double.Parse(num1) / divisor).ToString();
+		}
+		catch (DivideByZeroException)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", "Cannot divide by zero.","");
+
+		}
+		catch (FormatException ex)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+		}
+		catch (Exception ex)
+		{
+			await JSRuntime.InvokeVoidAsync("showAlert", $"Error: {ex.Message}", "");
+		}
+
+		Clear();
+	}
+
+
+
+	private void Clear()
+	{
+		num1 = "";
+		num2 = "";
+	}
+
+	private void ClearAll()
+	{
+		num1 = "";
+		num2 = "";
+		result = "";
+	}
+
+}
