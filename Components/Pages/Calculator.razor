@@ -1,29 +1,35 @@
 ﻿@page "/calculator"
 @inject IJSRuntime JSRuntime
-
+<!--adding a JSRuntime blazor service to the page-->
 
 <div>
 	<h1 class="text-success fw-bold ">Blazor Calculator</h1>
 	<hr>
 </div>
 
+<!--First number text box binded to number 1-->
 <div class="input-group mb-3">
 	<label class="col-sm-2 col-form-label fw-bold">Enter First Number</label>
 	<input class="rounded-2 border-1 w-25" placeholder="Enter First Number" @bind="@num1"  />
 
 </div>
 <br />
+
+<!--Second number text box binded to number 2-->
 <div class="input-group mb-3">
 	<label class="col-sm-2 col-form-label fw-bold">Enter Second Number</label>
 	<input class="rounded-2 border-1 w-25" placeholder="Enter Second Number" @bind="@num2"  />
 </div>
 <br />
+
+<!--Result text box binded to the result -->
 <div class="input-group mb-3">
 
 	<label class="fw-bold col-sm-2 col-form-label">Result: </label>
 	<label class="bg-secondary bg-opacity-25 rounded-2 border-1 w-25 text-sm-center">@result</label>
 </div>
 <br />
+<!--Calculator buttons-->
 <div>
 	<button class="btn btn-outline-success me-5" @onclick="Addition">		Add (+)</button>
 	<button class="btn btn-outline-primary me-5" @onclick="Subtraction">		Subtract (-)</button>
@@ -43,18 +49,17 @@
 		{
 			result = (double.Parse(num1) + double.Parse(num2)).ToString();
 		}
-
+		//formatexception used to identify non-numerical values entered
 		catch (FormatException)
 		{
+			//Javascript function called once invalid input is entered
 			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
-			
-
 		}
 		catch (Exception ex)
 		{
 			await JSRuntime.InvokeVoidAsync("showAlert", $"Error: {ex.Message}", "");
 		}
-
+		//clear method to empty inputs
 		Clear();
 	}
 
@@ -64,9 +69,10 @@
 		{
 			result = (double.Parse(num1) - double.Parse(num2)).ToString();
 		}
-
+		//formatexception used to identify non-numerical values entered
 		catch (FormatException)
 		{
+			//Javascript function called once invalid input is entered
 			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
 		}
 		catch (Exception ex)
@@ -82,9 +88,10 @@
 		{
 			result = (double.Parse(num1) * double.Parse(num2)).ToString();
 		}
-
+		//formatexception used to identify non-numerical values entered
 		catch (FormatException)
 		{
+			//Javascript function called once invalid input is entered
 			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
 		}
 		catch (Exception ex)
@@ -106,31 +113,32 @@
 
 			result = (double.Parse(num1) / divisor).ToString();
 		}
-		catch (DivideByZeroException)
+		catch (DivideByZeroException) //exception that is caught when a number is divided by zero
 		{
 			await JSRuntime.InvokeVoidAsync("showAlert", "Cannot divide by zero.","");
 
 		}
+		//formatexception used to identify non-numerical values entered
 		catch (FormatException ex)
 		{
+			//Javascript function called once invalid input is entered
 			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
 		}
 		catch (Exception ex)
 		{
 			await JSRuntime.InvokeVoidAsync("showAlert", $"Error: {ex.Message}", "");
 		}
-
 		Clear();
 	}
 
-
-
+	//clear method to clear user first and second number inputs
 	private void Clear()
 	{
 		num1 = "";
 		num2 = "";
 	}
 
+	//seperate method to clear everything including the result
 	private void ClearAll()
 	{
 		num1 = "";

@@ -8,8 +8,9 @@ namespace A2EventDrivenAppAndExceptions.Data
 {
     class SpecialCharactersException : ApplicationException
     {
+        //parameterless constructor
         public SpecialCharactersException() : base() { }
-
+        //constructor with parameters to overrwrite the paramaterless constructor w/ the exception message
         public SpecialCharactersException(string message) : base(message) { }
     }
 }

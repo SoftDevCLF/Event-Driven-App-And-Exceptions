@@ -1,6 +1,7 @@
 ﻿@page "/todo"
 @using A2EventDrivenAppAndExceptions.Data
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JSRuntime 
+<!--adding a JSRuntime blazor service to the page-->
 
 <h2>Todo List</h2>
 <br />
@@ -35,6 +36,7 @@
         }
     </ul>
 
+    <!--Done list, the checked (done) items are added to the done list and removed when deleted-->
     <h3>Done</h3>
 
     <ul class="list-group list-group-flush">
@@ -88,7 +90,7 @@
                 
             }
 		}
-
+        //catchies custom exception for special characters
 		catch (SpecialCharactersException)
 		{
             await JSRuntime.InvokeVoidAsync("showAlert", "Todo item contains invalid characters. These are not allowed: @ # $ %", "");
