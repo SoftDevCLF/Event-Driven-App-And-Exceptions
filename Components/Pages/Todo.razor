@@ -17,37 +17,40 @@
 
     <h3>Todo</h3>
 
-    <ul class="list-group list-group-flush">
+    <!--Todo list, the unchecked (not done) items are added to the todo list and removed when deleted-->
+    <ul class="list-inline">
         @foreach (var todo in todos)
         {
             if (!todo.IsDone)
             {
 
-                <li class="list-group-item ">
+                <li>
                     <div>
                         <!--Adding a checkbox binded to the boolean from the TodoItem class-->
                         <input type="checkbox" @bind="todo.IsDone" />
                         <!--List of todos-->
                         @todo.Title
-                        <button class="btn btn-danger" @onclick="() => RemoveItem(todo)">Delete</button>
+                        <button class="btn btn-danger ms-2 mb-1" @onclick="() => RemoveItem(todo)">Delete</button>
                     </div>
                 </li>
             }
         }
     </ul>
 
-    <!--Done list, the checked (done) items are added to the done list and removed when deleted-->
+   
     <h3>Done</h3>
 
-    <ul class="list-group list-group-flush">
+	<!--Done list, the checked (done) items are added to the done list and removed when deleted-->
+    <ul class="list-inline">
+        <!-- For each todo in the list where the IsDone property is true, show the todo when checked -->
         @foreach (var todo in todos.Where(t => t.IsDone))
         {
             @if (todo.IsDone)
             {
-                <li class="list-group-item">
-                    <div class=" form-check">                  
-                        @todo.Title
-                        <button class="btn btn-danger" @onclick="() => RemoveItem(todo)">Delete</button>
+                <li>
+                    <div >
+                        <label class="ms-3">@todo.Title</label>
+                        <button class="btn btn-danger ms-2 mb-1" @onclick="() => RemoveItem(todo)">Delete</button>
                     </div>
                 </li>         
 

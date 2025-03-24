@@ -3,14 +3,14 @@
 <!--adding a JSRuntime blazor service to the page-->
 
 <div>
-	<h1 class="text-primary fw-bold ">Blazor Calculator</h1>
+	<h1 class="text-success fw-bold">Blazor Calculator</h1>
 	<hr>
 </div>
 
 <!--First number text box binded to number 1-->
 <div class="input-group mb-3">
 	<label class="col-sm-2 col-form-label fw-bold">Enter First Number</label>
-	<input class="rounded-2 border-1 w-25" placeholder="Enter First Number" @bind="@num1"  />
+	<input class="rounded-2 border w-25" placeholder="Enter First Number" @bind="@num1"  />
 
 </div>
 <br />
@@ -18,15 +18,14 @@
 <!--Second number text box binded to number 2-->
 <div class="input-group mb-3">
 	<label class="col-sm-2 col-form-label fw-bold">Enter Second Number</label>
-	<input class="rounded-2 border-1 w-25" placeholder="Enter Second Number" @bind="@num2"  />
+	<input class="rounded-2 border w-25" placeholder="Enter Second Number" @bind="@num2"  />
 </div>
 <br />
 
 <!--Result text box binded to the result -->
 <div class="input-group mb-3">
-
 	<label class="fw-bold col-sm-2 col-form-label">Result: </label>
-	<label class="bg-secondary bg-opacity-25 rounded-2 border-1 w-25 text-sm-center">@result</label>
+	<label class="bg-secondary bg-opacity-10 rounded-2 w-25 text-sm-center border p-2">@result</label>
 </div>
 <br />
 <!--Calculator buttons-->
@@ -53,7 +52,7 @@
 		catch (FormatException)
 		{
 			//Javascript function called once invalid input is entered
-			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+			await JSRuntime.InvokeVoidAsync("showAlert", "Please enter valid numbers.", "");
 		}
 		catch (Exception ex)
 		{
@@ -73,7 +72,7 @@
 		catch (FormatException)
 		{
 			//Javascript function called once invalid input is entered
-			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+			await JSRuntime.InvokeVoidAsync("showAlert", "Please enter valid numbers.", "");
 		}
 		catch (Exception ex)
 		{
@@ -92,7 +91,7 @@
 		catch (FormatException)
 		{
 			//Javascript function called once invalid input is entered
-			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+			await JSRuntime.InvokeVoidAsync("showAlert", "Please enter valid numbers.", "");
 		}
 		catch (Exception ex)
 		{
@@ -115,14 +114,14 @@
 		}
 		catch (DivideByZeroException) //exception that is caught when a number is divided by zero
 		{
-			await JSRuntime.InvokeVoidAsync("showAlert", "Cannot divide by zero.","");
+			await JSRuntime.InvokeVoidAsync("showAlert", "Error: Cannot divide by zero.","");
 
 		}
 		//formatexception used to identify non-numerical values entered
 		catch (FormatException ex)
 		{
 			//Javascript function called once invalid input is entered
-			await JSRuntime.InvokeVoidAsync("showAlert", "Plase enter valid numbers.", "");
+			await JSRuntime.InvokeVoidAsync("showAlert", "Please enter valid numbers.", "");
 		}
 		catch (Exception ex)
 		{
